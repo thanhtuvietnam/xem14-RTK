@@ -1,0 +1,1 @@
+import{H as i,s,a as r}from"./index-xleVCo4H.js";class d extends i{constructor(t,e){super(t,e),this.$$PROVIDER_TYPE="AUDIO",s(()=>{this.airPlay=new r(this.media,e)},this.scope)}get type(){return"audio"}setup(){super.setup(),this.type==="audio"&&this.ctx.notify("provider-setup",this)}get audio(){return this.media}}export{d as AudioProvider};
