@@ -88,17 +88,17 @@ const NavBar = () => {
     <div className=' bg-[#12171b] shadow-custom'>
       <ul
         ref={navbarRef}
-        className='text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300'>
+        className='text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300 '>
         {navLists &&
           navLists.map((navList, index) => (
             <li
               key={index}
-              className='relative'
+              className='relative border-r-[0.5px] first:border-l-[0.5px] border-[#2e353f] '
               onMouseLeave={handleMouseLeave}>
               {navList === 'THỂ LOẠI' || navList === 'QUỐC GIA' ? (
                 <div
                   ref={showDropDown === navList ? dropdownRef : null} // Gắn ref khi dropdown hiển thị
-                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] hover:translate-y-0 cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
+                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
                   onClick={() => handleDropdownClick(navList)} // Thêm onClick
                   onMouseEnter={() => handleMouseEnter(navList)}
                   // onMouseLeave={handleMouseLeave}
@@ -110,7 +110,7 @@ const NavBar = () => {
                 </div>
               ) : (
                 <div
-                  className={`px-2.5 py-3.5 hover:text-[#ff8a00] hover:bg-[#000000] hover:translate-y-0 cursor-pointer ${activeButton === index ? 'bg-[#223344]' : ''}`}
+                  className={`px-2.5 py-3.5 hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer ${activeButton === index ? 'bg-[#223344]' : ''}`}
                   onClick={() => handleItemClick(index)}>
                   {navList}
                 </div>
