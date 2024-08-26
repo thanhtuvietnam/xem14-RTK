@@ -25,10 +25,13 @@ import { IoCloseCircleSharp } from 'react-icons/io5';
 import { FaServer } from 'react-icons/fa';
 import { MdOutlineExpandMore } from 'react-icons/md';
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { IoMdArrowDropup } from 'react-icons/io';
 import { IoLogoOctocat } from 'react-icons/io';
 import { PiArrowLineUpBold } from 'react-icons/pi';
 import { ImStarEmpty } from 'react-icons/im';
 import { TbRewindForward10, TbRewindBackward10 } from 'react-icons/tb';
+import { MdOutlineExpandLess } from "react-icons/md";
+
 /* -------------------------------------------------------------------------- */
 //Plyr icons
 import { AirPlayIcon } from '@vidstack/react/icons';
@@ -86,6 +89,8 @@ export const icons = {
   ImStarEmpty,
   TbRewindForward10,
   TbRewindBackward10,
+  IoMdArrowDropup,
+  MdOutlineExpandLess
 };
 /* -------------------------------------------------------------------------- */
 export const customPlyrIcons = {
@@ -106,5 +111,3 @@ export const customPlyrIcons = {
   Settings: SettingsIcon,
   Volume: VolumeHighIcon,
 };
-
-

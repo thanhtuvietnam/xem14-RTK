@@ -1,25 +1,25 @@
-import { useEffect, useReducer, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { SearchBar, SideBar } from '../MainLayOut/index.js';
 import { icons } from '../../shared/icon.js';
 import { Link, useNavigate } from 'react-router-dom';
 import { navLists } from '../../shared/constant.js';
 import { convertToSlug } from '../../shared/utils.js';
 import { useActiveButton } from '../../hooks/useActiveButton.js';
-// import { quocGia, theLoai } from '../../services/theloaivaquocgia.js';
 import UtilityButton from '../Common/UtilityButton.jsx';
 import { useGetTheLoaiQuery, useGetQuocGiaQuery } from '../../store/apiSlice/homeApi.slice.js';
-import { useAppdispatch } from '../../store/hook.js';
+import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
+import { setDropdown } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
 
-const { MdOutlineMenu, FaBookmark, HiOutlineDotsVertical, IoMdArrowDropdown } = icons;
+const { MdOutlineMenu, FaBookmark, HiOutlineDotsVertical, IoMdArrowDropdown, IoMdArrowDropup } = icons;
 
 const NavBar = () => {
   const [isSideBarActive, setIsSideBarActive] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
   const [activeButton, handleClick] = useActiveButton(navLists);
-  const [showDropDown, setShowDropDown] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const navbarRef = useRef(null);
 
   const { data: theLoaiRes, isLoading: isLoadingTheLoai, isError: isErrorTheLoai } = useGetTheLoaiQuery();
   const { data: quocGiaRes, isLoading: isLoadingQuocGia, isError: isErrorQuocGia } = useGetQuocGiaQuery();
@@ -31,13 +31,15 @@ const NavBar = () => {
   const quocGia = quocGiaRes?.data?.items;
 
   const dispatch = useAppdispatch();
-  useEffect(() => {
-    if (theLoai && quocGia) {
-      // console.log({ theLoai, quocGia });
-    } else if (isError) {
-      console.error('Có lỗi xảy ra:');
-    }
-  }, [theLoai, quocGia]); // Chạy useEffect khi theloai1 thay đổi
+  // const dropdown = useAppSelector((state) => state.loadingState.Dropdown);
+
+  // useEffect(() => {
+  //   if (theLoai && quocGia) {
+  //     console.log({ theLoai, quocGia });
+  //   } else if (isError) {
+  //     console.error('Có lỗi xảy ra:');
+  //   }
+  // }, [theLoai, quocGia]);
 
   const navListsSlug = navLists.map((text) => convertToSlug(text));
 
@@ -46,23 +48,28 @@ const NavBar = () => {
     navigate(`/${navListsSlug[index]}`);
     dispatch(setCurrentPage(1));
     dispatch(setPage(1));
-    dispatch(clearSearchKey())
+    dispatch(clearSearchKey());
+    // dispatch(setDropdown((previous) => !previous));
+    setShowDropDown(null);
+  };
+
+  const handleDropdownClick = (item) => {
+    setShowDropDown((prev) => (prev === item ? 'null' : item));
+    // setShowDropDown((prev) => (!prev));
   };
 
   const handleMouseEnter = (item) => {
     setShowDropDown(item);
   };
   const handleMouseLeave = () => {
-    setShowDropDown(false);
+    setShowDropDown(null);
   };
 
-  const handleDropdownClick = (item) => {
-    setShowDropDown((prev) => (prev === item ? 'null' : item));
-  };
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropDown(null);
+      // Kiểm tra xem click có nằm ngoài dropdown và navbar không
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) && navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setShowDropDown(null); // Đóng dropdown
       }
     };
 
@@ -70,25 +77,35 @@ const NavBar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleCloseSideBar = () => {
+    setIsSideBarActive(false);
+    dispatch(clearSearchKey());
+    dispatch(setCurrentPage(1));
+    dispatch(setPage(1));
+  };
+
   return (
     <div className=' bg-[#12171b] shadow-custom'>
-      <ul className='text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300'>
+      <ul
+        ref={navbarRef}
+        className='text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300'>
         {navLists &&
           navLists.map((navList, index) => (
             <li
               key={index}
               className='relative'
-              // onMouseLeave={handleMouseLeave}
-            >
+              onMouseLeave={handleMouseLeave}>
               {navList === 'THỂ LOẠI' || navList === 'QUỐC GIA' ? (
                 <div
                   ref={showDropDown === navList ? dropdownRef : null} // Gắn ref khi dropdown hiển thị
-                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] hover:translate-y-0 cursor-pointer ${activeButton === index ? 'bg-[#223344]' : ''}`}
+                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] hover:translate-y-0 cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
                   onClick={() => handleDropdownClick(navList)} // Thêm onClick
+                  onMouseEnter={() => handleMouseEnter(navList)}
+                  // onMouseLeave={handleMouseLeave}
                 >
                   <div className='flex items-center justify-center'>
                     {navList}
-                    <IoMdArrowDropdown />
+                    {showDropDown === navList ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
                   </div>
                 </div>
               ) : (
@@ -113,6 +130,7 @@ const NavBar = () => {
                           {theLoai &&
                             theLoai.map((subMenuTheLoai) => (
                               <Link
+                                onClick={() => handleItemClick(index)}
                                 to={`/the-loai/${subMenuTheLoai.slug}`} // Điều chỉnh route cho thể loại
                                 key={subMenuTheLoai._id}
                                 className='p-2'>
@@ -126,6 +144,7 @@ const NavBar = () => {
                           {quocGia &&
                             quocGia.map((subMenuQuocGia) => (
                               <Link
+                                onClick={() => handleItemClick(index)}
                                 to={`/quoc-gia/${subMenuQuocGia.slug}`} // Điều chỉnh route cho quốc gia
                                 key={subMenuQuocGia._id}
                                 className='p-2'>
@@ -166,7 +185,7 @@ const NavBar = () => {
           theLoaiData={theLoai}
           quocGiaData={quocGia}
           isSidebarActive={isSideBarActive}
-          onCloseSideBar={() => setIsSideBarActive(false)}
+          onCloseSideBar={handleCloseSideBar}
         />
       </div>
       <div className='hidden md:flex'>
@@ -177,38 +196,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-
-
-  // const initialState = {
-  //   subMenuTheLoais: [],
-  //   subMenuQuocGias: [],
-  // };
-
-  // const reducer = (state, action) => {
-  //   switch (action.type) {
-  //     case 'SET_SUBMENU_THELOAI':
-  //       return { ...state, subMenuTheLoais: action.payload };
-  //     case 'SET_SUBMENU_QUOCGIA':
-  //       return { ...state, subMenuQuocGias: action.payload };
-  //     default:
-  //       return state;
-  //   }
-  // };
-  // const [state, dispatch] = useReducer(reducer, initialState);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   const fetchData = async () => {
-  //     try {
-  //       const [theloaiRes, quocgiaRes] = await Promise.all([theLoai(), quocGia()]);
-  //       dispatch({ type: 'SET_SUBMENU_THELOAI', payload: theloaiRes });
-  //       dispatch({ type: 'SET_SUBMENU_QUOCGIA', payload: quocgiaRes });
-  //     } catch (error) {
-  //       console.log(`lỗi ở fetchData navbar: ${error}`);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);

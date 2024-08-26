@@ -21,7 +21,6 @@
     "@vidstack/react": "^1.12.8",
     "antd": "^5.20.0",
     "artplayer": "^5.1.6",
-    "axios": "^1.7.2",
     "hls.js": "^1.5.14",
     "mdb-react-ui-kit": "^8.0.0",
     "media-icons": "^1.1.5",

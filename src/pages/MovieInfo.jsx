@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getMovieInfo } from '../services/home';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Filter, TrendingNow, SideMovieInfo, ScrollToTop } from '../components/Common/index.js';
 import { PacmanLoader, MoonLoader } from 'react-spinners';
@@ -13,33 +12,9 @@ import Error from './Error.jsx';
 
 const MovieInfo = () => {
   const { slug } = useParams();
-  // const [movieDetails, setMovieDetails] = React.useState(null);
-  // const [isLoading, setIsLoading] = React.useState(true);
   const navigate = useNavigate();
-
   const { data: MovieRes, isLoading, isFetching, isError, error } = useGetMovieResQuery(slug);
   const movieDetails = MovieRes?.data?.item;
-  // useEffect(() => {
-  //   if (MovieDetails) {
-  //     console.log(MovieDetails);
-  //   }
-  // }, [slug]);
-
-  // React.useEffect(() => {
-  //   const fetchMovieDetail = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const movieDetails = await getMovieInfo([{ slug }]);
-  //       setMovieDetails(movieDetails);
-  //       // console.log(movieDetails)
-  //     } catch (error) {
-  //       console.log(`Error in fetchMovieDetail MovieInfo.jsx: ${error}`);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchMovieDetail();
-  // }, [slug]);
 
   const handleWatchMovie = () => {
     navigate(`/xem-phim/${slug}`, { state: { movieDetails } });
@@ -149,4 +124,3 @@ const MovieInfo = () => {
 };
 
 export default MovieInfo;
-``;

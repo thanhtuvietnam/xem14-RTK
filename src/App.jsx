@@ -3,12 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import { Home, Error, PhimBo, PhimLe, HomePage,Phim18Cong,MovieInfo,SapChieu,TVShows,HoatHinh,MovieWatch,Theloai,QuocGia,SearchPage } from './pages/index';
 import { path } from './shared/constant';
 import { useState } from 'react';
-import { SearchProvider } from './context/SearchContext';
+
 
 function App() {
 
   return (
-    <SearchProvider> 
+
      <Routes>
       <Route path={path.HOME} element={<Home />}>
         <Route path={path.HOMEPAGE} element={<HomePage />} />
@@ -26,7 +26,7 @@ function App() {
         <Route path={path.SEARCHRESULTS} element={<SearchPage/>} />
       </Route>
     </Routes>
-    </SearchProvider>
+
     
   );
 }

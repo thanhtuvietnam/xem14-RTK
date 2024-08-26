@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Filter, TrendingNow, MovieWatchBox, RecommendMovie, TableLink, LinkServer, NoteViewer } from '../components/Common/index.js';
 import { PacmanLoader, MoonLoader } from 'react-spinners';
-import { getMovieInfo } from '../services/home.js';
+
 import { useLocation } from 'react-router-dom';
 import { noteMovieWatch } from '../shared/constant.js';
 

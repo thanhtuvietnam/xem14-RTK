@@ -3,7 +3,7 @@ import { NavBar, SideBar, Title } from '../components/MainLayOut/index.js';
 import { Outlet } from 'react-router-dom';
 
 
-const Home = ({}) => {
+const Home = () => {
   return (
     <div className='bg-[#222d38]'>
       <Title value='Cuồng Phim | Xem phim thỏa thích' />

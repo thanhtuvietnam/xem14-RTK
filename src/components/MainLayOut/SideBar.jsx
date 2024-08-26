@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { convertToSlug } from '../../shared/utils';
@@ -11,20 +11,35 @@ import { navLists } from '../../shared/constant';
 const icons = [<HomeOutlined />, <VideoCameraOutlined />, <PlaySquareOutlined />, <TrophyOutlined />, <IoLogoOctocat />, <AppstoreOutlined />, <GlobalOutlined />, <SmileOutlined />, <ClockCircleOutlined />, <CloseOutlined />];
 
 const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) => {
-  const [showDropDown, setShowDropDown] = useState(null);
+  const [openKeys, setOpenKeys] = useState([]); // State để quản lý openKeys
+  //   const [showDropDown, setShowDropDown] = useState(null);
 
-  const handleMouseEnter = (item) => {
-    setShowDropDown(item);
-  };
+  // console.log(showDropDown)
 
-  const handleMouseLeave = () => {
-    setShowDropDown(null);
-  };
+  //   const handleMouseEnter = (item) => {
+  //     // setShowDropDown(item);
+  //     if (isSidebarActive) {
+  //       setShowDropDown(item);
+  //     }
+  //   };
 
-  const handleItemClick = () => {
-    if (window.innerWidth <= 1024) {
-      onCloseSideBar();
-    }
+  //   const handleMouseLeave = () => {
+  //     // setShowDropDown(null);
+  //     if (isSidebarActive) {
+  //       setShowDropDown(null);
+  //     }
+  //   };
+
+  // const handleItemClick = () => {
+  //   setOpenKeys([]); // Đóng tất cả submenu khi đóng sidebar
+  //   if (window.innerWidth <= 1024) {
+  //     onCloseSideBar();
+  //   }
+  // };
+  
+  const handleCloseSideBar = () => {
+    setOpenKeys([]); // Đóng tất cả submenu khi đóng sidebar
+    onCloseSideBar();
   };
 
   const menuItems = navLists.map((item, index) => {
@@ -38,7 +53,7 @@ const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) 
           label: (
             <Link
               to={`/the-loai/${theLoai.slug}`}
-              onClick={handleItemClick}>
+              onClick={handleCloseSideBar}>
               {theLoai.name}
             </Link>
           ),
@@ -54,7 +69,7 @@ const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) 
           label: (
             <Link
               to={`/quoc-gia/${quocGia.slug}`}
-              onClick={handleItemClick}>
+              onClick={handleCloseSideBar}>
               {quocGia.name}
             </Link>
           ),
@@ -67,13 +82,15 @@ const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) 
         label: (
           <Link
             to={`/${convertToSlug(item)}`}
-            onClick={handleItemClick}>
+            onClick={handleCloseSideBar}>
             {item}
           </Link>
         ),
       };
     }
   });
+
+  // console.log(menuItems);
 
   return (
     <div>
@@ -92,7 +109,7 @@ const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) 
               </span>
             </div>
             <button
-              onClick={onCloseSideBar}
+              onClick={handleCloseSideBar} // Sử dụng handleCloseSideBar
               className='text-black text-xl mr-1.5 rounded-full px-1 x-button'>
               <CloseOutlined />
             </button>
@@ -104,16 +121,15 @@ const SideBar = ({ onCloseSideBar, isSidebarActive, theLoaiData, quocGiaData }) 
           mode='inline'
           defaultSelectedKeys={['TRANG CHỦ']}
           items={menuItems}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          openKeys={openKeys} // Sử dụng openKeys để quản lý open submenu
+          onOpenChange={(keys) => setOpenKeys(keys)} // Cập nhật openKeys khi submenu được mở
         />
       </div>
       <div
-        onClick={onCloseSideBar}
+        onClick={handleCloseSideBar}
         className={`bg-black/60 z-[5] fixed top-0 left-0 w-full h-full visible lg:invisible md:opacity-0 transition duration-300  ${isSidebarActive ? 'opacity-100 visible' : 'opacity-0 invisible'} media-screen`}></div>
     </div>
   );
 };
 
 export default SideBar;
-

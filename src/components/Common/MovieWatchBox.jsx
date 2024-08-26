@@ -5,8 +5,7 @@ import { icons } from '../../shared/icon.js';
 import { noteMovieWatch2 } from '../../shared/constant.js';
 // import { Rate } from 'antd';
 
-
-const { MdOutlineExpandMore, ImBookmark, FaCirclePlus, ImStarEmpty } = icons;
+const { MdOutlineExpandMore, ImBookmark, FaCirclePlus, MdOutlineExpandLess, ImStarEmpty } = icons;
 // import ArtPlayer from './ArtPlayer';
 // import Artplayer from 'artplayer';
 
@@ -64,11 +63,11 @@ const MovieWatchBox = ({ movieDetails }) => {
             <button
               className='text-[13px] text-[#a5a5a5] flex items-center'
               onClick={() => SetContentClick((prev) => !prev)}>
-              <span>Nội dung phim</span> <MdOutlineExpandMore size={15} />
+              <span>Nội dung phim</span> {contentClick ? <MdOutlineExpandLess /> : <MdOutlineExpandMore size={15} />}
             </button>
           </div>
         </div>
-       
+
         {/* <div>sao đánh giá</div> */}
       </div>
       {contentClick ? (

@@ -25,20 +25,7 @@ export const useHoverState = () => {
   const handleMouseLeave = () => setIsHovering(false);
   return { isHovering, handleMouseEnter, handleMouseLeave };
 };
-// export const linkUrl = (film) => {
-//   switch (film.type) {
-//     case 'series':
-//       return `phim-bo/chitiet-phim/${film.slug}`;
-//     case 'single':
-//       return `phim-le/chitiet-phim/${film.slug}`;
-//     case 'hoathinh':
-//       return `hoat-hinh/chitiet-phim/${film.slug}`;
-//     case 'tvshows':
-//       return `tvshows/chitiet-phim/${film.slug}`;
-//     default:
-//       return '/error';
-//   }
-// };
+
 export const linkUrl = (film) => {
   switch (film.type) {
     case 'series':
