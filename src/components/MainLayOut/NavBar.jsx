@@ -8,11 +8,12 @@ import { useActiveButton } from '../../hooks/useActiveButton.js';
 // import { quocGia, theLoai } from '../../services/theloaivaquocgia.js';
 import UtilityButton from '../Common/UtilityButton.jsx';
 import { useGetTheLoaiQuery, useGetQuocGiaQuery } from '../../store/apiSlice/homeApi.slice.js';
+import { useAppdispatch } from '../../store/hook.js';
+import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
 
-const { MdOutlineMenu, FaBookmark,  HiOutlineDotsVertical, IoMdArrowDropdown } = icons;
+const { MdOutlineMenu, FaBookmark, HiOutlineDotsVertical, IoMdArrowDropdown } = icons;
 
 const NavBar = () => {
-
   const [isSideBarActive, setIsSideBarActive] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
   const [activeButton, handleClick] = useActiveButton(navLists);
@@ -29,51 +30,23 @@ const NavBar = () => {
   const theLoai = theLoaiRes?.data?.items;
   const quocGia = quocGiaRes?.data?.items;
 
+  const dispatch = useAppdispatch();
   useEffect(() => {
     if (theLoai && quocGia) {
-      // console.log({ theLoai, quocGia }); 
-    }else if(isError) {
-        console.error('Có lỗi xảy ra:');
+      // console.log({ theLoai, quocGia });
+    } else if (isError) {
+      console.error('Có lỗi xảy ra:');
     }
   }, [theLoai, quocGia]); // Chạy useEffect khi theloai1 thay đổi
 
-  // const initialState = {
-  //   subMenuTheLoais: [],
-  //   subMenuQuocGias: [],
-  // };
-
-  // const reducer = (state, action) => {
-  //   switch (action.type) {
-  //     case 'SET_SUBMENU_THELOAI':
-  //       return { ...state, subMenuTheLoais: action.payload };
-  //     case 'SET_SUBMENU_QUOCGIA':
-  //       return { ...state, subMenuQuocGias: action.payload };
-  //     default:
-  //       return state;
-  //   }
-  // };
-  // const [state, dispatch] = useReducer(reducer, initialState);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   const fetchData = async () => {
-  //     try {
-  //       const [theloaiRes, quocgiaRes] = await Promise.all([theLoai(), quocGia()]);
-  //       dispatch({ type: 'SET_SUBMENU_THELOAI', payload: theloaiRes });
-  //       dispatch({ type: 'SET_SUBMENU_QUOCGIA', payload: quocgiaRes });
-  //     } catch (error) {
-  //       console.log(`lỗi ở fetchData navbar: ${error}`);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
   const navListsSlug = navLists.map((text) => convertToSlug(text));
 
   const handleItemClick = (index) => {
     handleClick(index);
     navigate(`/${navListsSlug[index]}`);
+    dispatch(setCurrentPage(1));
+    dispatch(setPage(1));
+    dispatch(clearSearchKey())
   };
 
   const handleMouseEnter = (item) => {
@@ -204,3 +177,38 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+
+
+  // const initialState = {
+  //   subMenuTheLoais: [],
+  //   subMenuQuocGias: [],
+  // };
+
+  // const reducer = (state, action) => {
+  //   switch (action.type) {
+  //     case 'SET_SUBMENU_THELOAI':
+  //       return { ...state, subMenuTheLoais: action.payload };
+  //     case 'SET_SUBMENU_QUOCGIA':
+  //       return { ...state, subMenuQuocGias: action.payload };
+  //     default:
+  //       return state;
+  //   }
+  // };
+  // const [state, dispatch] = useReducer(reducer, initialState);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const fetchData = async () => {
+  //     try {
+  //       const [theloaiRes, quocgiaRes] = await Promise.all([theLoai(), quocGia()]);
+  //       dispatch({ type: 'SET_SUBMENU_THELOAI', payload: theloaiRes });
+  //       dispatch({ type: 'SET_SUBMENU_QUOCGIA', payload: quocgiaRes });
+  //     } catch (error) {
+  //       console.log(`lỗi ở fetchData navbar: ${error}`);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);

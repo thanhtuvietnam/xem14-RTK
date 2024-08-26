@@ -33,15 +33,15 @@ export const homeApi = createApi({
       query: ({ category, page }) => `danh-sach/${category}?page=${page}`,
     }),
     getTheLoai: builder.query({
-      query: (genreName = '', page = 1) => `the-loai/${genreName}?page=${page}`,
+      query: (genreName = '', page) => `the-loai/${genreName}?page=${page}`,
     }),
     getQuocGia: builder.query({
-      query: (genreName = '', page = 1) => `quoc-gia/${genreName}?page=${page}`,
+      query: (genreName = '', page) => `quoc-gia/${genreName}?page=${page}`,
     }),
-    searchMovies: builder.query({
-      query: ({ keyword, page }) => `tim-kiem?keyword=${keyword}&page=${page}`,
+    getSearch: builder.query({
+      query: ({ searchTerm, page }) => `tim-kiem?keyword=${searchTerm}&page=${page}`,
     }),
   }),
 });
 
-export const { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery, useGetTheLoaiQuery, useGetQuocGiaQuery, useSearchMoviesQuery, useGetHomeQuery, useGetMovieResQuery, useGetMoviesByCategoryQuery } = homeApi;
+export const { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery, useGetTheLoaiQuery, useGetQuocGiaQuery, useGetSearchQuery, useGetHomeQuery, useGetMovieResQuery, useGetMoviesByCategoryQuery } = homeApi;

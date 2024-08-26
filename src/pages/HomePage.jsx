@@ -6,7 +6,7 @@ import { TrendingNow, Filter, NoteViewer } from '../components/Common/index.js';
 import { MiniSlider } from '../components/Slider/MiniSlider';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { noteLine } from '../shared/constant.js';
-import { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery } from '../store/apiSlice/homeApi.slice.js';
+import { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery, useGetMoviesByCategoryQuery } from '../store/apiSlice/homeApi.slice.js';
 import { useAppdispatch, useAppSelector } from '../store/hook.js';
 import { setLoading } from '../store/mainSlice/LoadingSlice/loadingSlice.js';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,6 +18,9 @@ const HomePage = () => {
   const [movies, setMovies] = React.useState([]);
   const Loading = useAppSelector((state) => state.loadingState.Loading);
   const dispatch = useAppdispatch();
+
+
+  // const { data: categoryData, isLoading, isFetching, isError, error } = useGetMoviesByCategoryQuery({ category: categorySlug, page: currentPage }, { skip: !categorySlug });
 
   const PhimmoiQuery = useGetPhimmoiQuery(1);
   const PhimboQuery = useGetPhimboQuery(1);

@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   Loading: false,
-  totalItems: 0,
 };
 
 const loadingSlice = createSlice({
@@ -12,12 +11,9 @@ const loadingSlice = createSlice({
     setLoading: (state, action) => {
       state.Loading = action.payload;
     },
-    setTotalItems: (state, action) => {
-      state.totalItems = action.payload;
-    },
   },
 });
 
-export const { setLoading, setTotalItems } = loadingSlice.actions;
+export const { setLoading } = loadingSlice.actions;
 
 export default loadingSlice.reducer;
