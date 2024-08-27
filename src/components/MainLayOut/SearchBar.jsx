@@ -11,10 +11,10 @@ import { useGetSearchQuery, useGetHomeQuery } from '../../store/apiSlice/homeApi
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage, setSearchKey, setTotalItems } from '../../store/searchSlice/searchSlice.js';
 import { useDebounce } from '../../hooks/useDebounce.js';
+import { clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
 const { IoIosSearch } = icons;
 
 const SearchBar = () => {
-  
   const [showDropdown, setShowDropdown] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Thêm state này
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Kiểm tra kích thước màn hình
@@ -25,32 +25,45 @@ const SearchBar = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const page = useAppSelector((state) => state.search.page);
+  const typeRTK = useAppSelector((state) => state.submenu.type);
+  const slugRTK = useAppSelector((state) => state.submenu.slug);
+  const currentPageRTK = useAppSelector((state) => state.search.currentPage);
+  const totalItemsRTK = useAppSelector((state) => state.search.totalItems);
 
-  const { data: homeRes } = useGetHomeQuery();
+  const { data: homeRes } = useGetHomeQuery(null, { skip: totalItemsRTK !== 0 });
   const { data: state, isLoading, error, isFetching } = useGetSearchQuery({ searchTerm: debouncedSearchTerm, page }, { skip: !debouncedSearchTerm });
 
+  // const pageRTK = useAppSelector((state) => state.search.page);
 
   useEffect(() => {
-    const totalItems = homeRes?.data?.params?.pagination?.totalItems || 0;
-    if (totalItems) {
+    if (homeRes && homeRes.data && homeRes.data.params && homeRes.data.params.pagination) {
+      const totalItems = homeRes?.data?.params?.pagination?.totalItems || 0;
       dispatch(setTotalItems(totalItems));
     }
+    // if (totalItems) {
+    // }
   }, [homeRes]);
 
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  
-
   const handleChange = (e) => {
     dispatch(setSearchKey(e.target.value));
-    dispatch(setPage(1));
-    dispatch(setCurrentPage(1));
+    if (currentPageRTK !== 1 || page !== 1) {
+      dispatch(setCurrentPage(1));
+      dispatch(setPage(1));
+    }
+    if (typeRTK !== '' || slugRTK !== '') {
+      dispatch(clearType());
+      dispatch(clearSlug());
+    }
     setShowDropdown(true);
+    // dispatch(setPage(1));
+    // dispatch(setCurrentPage(1));
+    // dispatch(clearType());
+    // dispatch(clearSlug());
   };
-
-
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -59,7 +72,7 @@ const SearchBar = () => {
       navigate(`/tim-kiem?keyword=${searchTerm}`);
       setShowDropdown(false);
     }
-    e.target[0].value = '';
+    // e.target[0].value = '';
   };
 
   useEffect(() => {

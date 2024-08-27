@@ -2,14 +2,37 @@ import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { icons } from '../../shared/icon.js';
 import { SearchBar } from './index.js';
+import { useAppdispatch, useAppSelector } from '../../store/hook.js';
+import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
+import { clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
 
 const { FaBookmark } = icons;
 
 const Header = () => {
+  const dispatch = useAppdispatch();
+  const typeRTK = useAppSelector((state) => state.submenu.type);
+  const slugRTK = useAppSelector((state) => state.submenu.slug);
+  const searchKeyRTK = useAppSelector((state) => state.search.searchKey);
+  const currentPageRTK = useAppSelector((state) => state.search.currentPage);
+  const pageRTK = useAppSelector((state) => state.search.page);
+
+  const handleOnClick = () => {
+    if (currentPageRTK !== 1 || pageRTK !== 1) {
+      dispatch(setCurrentPage(1));
+      dispatch(setPage(1));
+    }
+    if (searchKeyRTK !== '') {
+      dispatch(clearSearchKey());
+    }
+    if (typeRTK !== '' || slugRTK !== '') {
+      dispatch(clearType());
+      dispatch(clearSlug());
+    }
+  };
   return (
     <div className='h-16 custom-bg'>
       <div className='h-full flex items-center justify-between text-[13px] text-[#e9eaee] leading-5 custom-page '>
-        <div>
+        <div onClick={handleOnClick}>
           <Link
             to='/'
             className='flex items-center gap-1.5 object-cover'>

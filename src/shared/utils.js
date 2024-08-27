@@ -63,11 +63,11 @@ export const shuffleAndSliceArray = (array, slicesize) => {
 };
 
 export const classifyAddon = (film) => {
-  if (film.sub_docquyen === true) {
+  if (film?.sub_docquyen === true) {
     return 'Vietsub Độc Quyền';
   } else {
-    if (film.episode_current.toLowerCase() === 'full') {
-      if (film.time === 'Đang cập nhật') {
+    if (film?.episode_current.toLowerCase() === 'full') {
+      if (film?.time === 'Đang cập nhật') {
         return null;
       } else {
         return film.time;

@@ -6,10 +6,12 @@ import { navLists } from '../../shared/constant.js';
 import { convertToSlug } from '../../shared/utils.js';
 import { useActiveButton } from '../../hooks/useActiveButton.js';
 import UtilityButton from '../Common/UtilityButton.jsx';
-import { useGetTheLoaiQuery, useGetQuocGiaQuery } from '../../store/apiSlice/homeApi.slice.js';
+
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
-import { setDropdown } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
+
+import { useGetCategoriesQuery } from '../../store/apiSlice/homeApi.slice.js';
+import { addQuocGia, addTheLoai, clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
 
 const { MdOutlineMenu, FaBookmark, HiOutlineDotsVertical, IoMdArrowDropdown, IoMdArrowDropup } = icons;
 
@@ -21,41 +23,56 @@ const NavBar = () => {
   const dropdownRef = useRef(null);
   const navbarRef = useRef(null);
 
-  const { data: theLoaiRes, isLoading: isLoadingTheLoai, isError: isErrorTheLoai } = useGetTheLoaiQuery();
-  const { data: quocGiaRes, isLoading: isLoadingQuocGia, isError: isErrorQuocGia } = useGetQuocGiaQuery();
+  const { data: theLoaiRes, isLoading: isLoadingTheLoai, isError: isErrorTheLoai } = useGetCategoriesQuery({ category: 'the-loai' });
+  const { data: quocGiaRes, isLoading: isLoadingQuocGia, isError: isErrorQuocGia } = useGetCategoriesQuery({ category: 'quoc-gia' });
 
   const isLoading = isLoadingTheLoai || isLoadingQuocGia;
   const isError = isErrorTheLoai || isErrorQuocGia;
 
   const theLoai = theLoaiRes?.data?.items;
   const quocGia = quocGiaRes?.data?.items;
+  useEffect(() => {
+    if (theLoai && quocGia) {
+      dispatch(addTheLoai(theLoai));
+      dispatch(addQuocGia(quocGia));
+    }
+  }, [quocGiaRes, theLoaiRes]);
+
+  const theLoaiRTK = useAppSelector((state) => state.submenu.theLoaiRTK);
+  const quocGiaRTK = useAppSelector((state) => state.submenu.quocGiaRTK);
 
   const dispatch = useAppdispatch();
-  // const dropdown = useAppSelector((state) => state.loadingState.Dropdown);
-
-  // useEffect(() => {
-  //   if (theLoai && quocGia) {
-  //     console.log({ theLoai, quocGia });
-  //   } else if (isError) {
-  //     console.error('Có lỗi xảy ra:');
-  //   }
-  // }, [theLoai, quocGia]);
 
   const navListsSlug = navLists.map((text) => convertToSlug(text));
+  const typeRTK = useAppSelector((state) => state.submenu.type);
+  const slugRTK = useAppSelector((state) => state.submenu.slug);
+  const searchKeyRTK = useAppSelector((state) => state.search.searchKey);
+  const currentPageRTK = useAppSelector((state) => state.search.currentPage);
+  const pageRTK = useAppSelector((state) => state.search.page);
+
+  function handleRTK() {
+    if (currentPageRTK !== 1 || pageRTK !== 1) {
+      dispatch(setCurrentPage(1));
+      dispatch(setPage(1));
+    }
+    if (searchKeyRTK !== '') {
+      dispatch(clearSearchKey());
+    }
+  }
 
   const handleItemClick = (index) => {
     handleClick(index);
     navigate(`/${navListsSlug[index]}`);
-    dispatch(setCurrentPage(1));
-    dispatch(setPage(1));
-    dispatch(clearSearchKey());
-    // dispatch(setDropdown((previous) => !previous));
+    handleRTK();
+    if (typeRTK !== '' || slugRTK !== '') {
+      dispatch(clearType());
+      dispatch(clearSlug());
+    }
     setShowDropDown(null);
   };
 
   const handleDropdownClick = (item) => {
     setShowDropDown((prev) => (prev === item ? 'null' : item));
-    // setShowDropDown((prev) => (!prev));
   };
 
   const handleMouseEnter = (item) => {
@@ -79,9 +96,21 @@ const NavBar = () => {
 
   const handleCloseSideBar = () => {
     setIsSideBarActive(false);
-    dispatch(clearSearchKey());
-    dispatch(setCurrentPage(1));
-    dispatch(setPage(1));
+    handleRTK();
+   
+  };
+
+  const handleTheLoaiClick = (slug) => {
+    navigate(`/the-loai/${slug}`, { state: { slug, type: 'the-loai' } });
+    handleRTK();
+    setShowDropDown(null);
+    
+    // console.log('da navigate the loai')
+  };
+  const handleQuocGiaClick = (slug) => {
+    navigate(`/quoc-gia/${slug}`, { state: { slug, type: 'quoc-gia' } });
+    handleRTK();
+    setShowDropDown(null);
   };
 
   return (
@@ -127,29 +156,31 @@ const NavBar = () => {
                     <div>
                       {index === 5 && ( // Kiểm tra index để hiển thị đúng dropdown
                         <div className='grid grid-cols-3 '>
-                          {theLoai &&
-                            theLoai.map((subMenuTheLoai) => (
-                              <Link
-                                onClick={() => handleItemClick(index)}
-                                to={`/the-loai/${subMenuTheLoai.slug}`} // Điều chỉnh route cho thể loại
+                          {theLoaiRTK &&
+                            theLoaiRTK.map((subMenuTheLoai) => (
+                              <div
+                                onClick={() => handleTheLoaiClick(subMenuTheLoai?.slug)}
+                                // onClick={() => handleItemClick(index)}
+                                // to={`/the-loai/${subMenuTheLoai.slug}`} // Điều chỉnh route cho thể loại
                                 key={subMenuTheLoai._id}
-                                className='p-2'>
+                                className='p-2 cursor-pointer'>
                                 {subMenuTheLoai.name}
-                              </Link>
+                              </div>
                             ))}
                         </div>
                       )}
                       {index === 6 && ( // Kiểm tra index để hiển thị đúng dropdown
                         <div className='grid grid-cols-3'>
-                          {quocGia &&
-                            quocGia.map((subMenuQuocGia) => (
-                              <Link
-                                onClick={() => handleItemClick(index)}
-                                to={`/quoc-gia/${subMenuQuocGia.slug}`} // Điều chỉnh route cho quốc gia
+                          {quocGiaRTK &&
+                            quocGiaRTK.map((subMenuQuocGia) => (
+                              <div
+                                onClick={() => handleQuocGiaClick(subMenuQuocGia?.slug)}
+                                // onClick={() => handleItemClick(index)}
+                                // to={`/quoc-gia/${subMenuQuocGia.slug}`} // Điều chỉnh route cho quốc gia
                                 key={subMenuQuocGia._id}
-                                className='p-2'>
+                                className='p-2 cursor-pointer'>
                                 {subMenuQuocGia.name}
-                              </Link>
+                              </div>
                             ))}
                         </div>
                       )}
@@ -182,8 +213,8 @@ const NavBar = () => {
       </div>
       <div>
         <SideBar
-          theLoaiData={theLoai}
-          quocGiaData={quocGia}
+          theLoaiData={theLoaiRTK}
+          quocGiaData={quocGiaRTK}
           isSidebarActive={isSideBarActive}
           onCloseSideBar={handleCloseSideBar}
         />

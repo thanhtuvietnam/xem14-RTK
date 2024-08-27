@@ -11,9 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
 
-
 const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySlug }) => {
-
   const location = useLocation();
 
   const pageType = location.pathname === '/tim-kiem' ? 'search' : 'normal';
@@ -21,6 +19,7 @@ const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySl
   const currentPage = useAppSelector((state) => state.search.currentPage);
 
   const { data: categoryData, isLoading, isFetching, isError, error } = useGetMoviesByCategoryQuery({ category: categorySlug, page: currentPage }, { skip: !categorySlug });
+
   /* -------------------------------------------------------------------------- */
   const limit = 24;
 
@@ -93,7 +92,7 @@ const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySl
         )}
         <div className='fixed bottom-0 bg-black/75 z-10'>
           <PaginationCom
-            routePath={location.pathname} 
+            routePath={location.pathname}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
@@ -106,4 +105,3 @@ const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySl
 };
 
 export default MovieCategory;
-

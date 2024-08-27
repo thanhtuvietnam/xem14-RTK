@@ -19,7 +19,6 @@ const HomePage = () => {
   const Loading = useAppSelector((state) => state.loadingState.Loading);
   const dispatch = useAppdispatch();
 
-
   const PhimmoiQuery = useGetPhimmoiQuery(1);
   const PhimboQuery = useGetPhimboQuery(1);
   const PhimleQuery = useGetPhimleQuery(1);

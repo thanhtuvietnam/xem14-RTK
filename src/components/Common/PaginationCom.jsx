@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppdispatch } from '../../store/hook';
 import { setCurrentPage, setPage } from '../../store/searchSlice/searchSlice';
 
-const PaginationCom = ({ currentPage, totalPages, routePath, onPageChange, pageType, onChange }) => {
+const PaginationCom = ({ currentPage, totalPages, routePath, onPageChange, pageType, onChange, categorySlug }) => {
   const navigate = useNavigate();
   const dispatch = useAppdispatch();
   // const { pageSearch } = useSearch();
@@ -18,6 +18,7 @@ const PaginationCom = ({ currentPage, totalPages, routePath, onPageChange, pageT
     dispatch(setCurrentPage(newPage));
     dispatch(setPage(newPage));
     navigate(`${routePath}?page=${newPage}`);
+    // navigate(`/the-loai/${categorySlug}?page=${newPage}`, { state: { slug: categorySlug, type } }); 
     // console.log(`Trang mới: ${newPage}`);
   };
 
