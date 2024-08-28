@@ -16,7 +16,7 @@ const loadingSlice = createSlice({
     setError: (state, action) => {
       state.Error = action.payload;
     },
-    setDropdown: (state, action) => {
+    setDropdown: (state) => {
       state.Dropdown = !state.Dropdown;
     },
   },

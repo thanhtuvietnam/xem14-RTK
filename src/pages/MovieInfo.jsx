@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Filter, TrendingNow, SideMovieInfo, ScrollToTop } from '../components/Common/index.js';
+import { Filter, TrendingNow, SideMovieInfo, ScrollToTop, BreadCrumb, NoteViewer } from '../components/Common/index.js';
 import { PacmanLoader, MoonLoader } from 'react-spinners';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { CardSkeleton, FilterSkeleton } from '../components/Skeleton/HomePageSkeleton/index.js';
@@ -9,12 +9,15 @@ import { useGetMovieResQuery } from '../store/apiSlice/homeApi.slice.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Error from './Error.jsx';
+import { noteLine } from '../shared/constant.js';
 
 const MovieInfo = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { data: MovieRes, isLoading, isFetching, isError, error } = useGetMovieResQuery(slug);
   const movieDetails = MovieRes?.data?.item;
+  const breadCrumbItem = MovieRes?.data?.breadCrumb[0];
+  console.log(breadCrumbItem);
 
   const handleWatchMovie = () => {
     navigate(`/xem-phim/${slug}`, { state: { movieDetails } });
@@ -29,6 +32,10 @@ const MovieInfo = () => {
   return (
     <div>
       <div className='min-h-screen custom-page px-0 bg-[#151d25]'>
+        <NoteViewer
+          hidden={`hidden`}
+          note={noteLine}
+        />
         <ToastContainer />
         <ScrollToTop />
         {isFetching ? (
@@ -98,9 +105,16 @@ const MovieInfo = () => {
               </div>
             </SkeletonTheme>
           </div>
-        ) : movieDetails ? ( 
+        ) : movieDetails ? (
           <>
             <Filter />
+            <div className='mx-4'>
+              <BreadCrumb
+                OthersBreadCrumb={'Chi Tiết Phim'}
+                hidden={'hidden'}
+                categoryBreadCrumb={breadCrumbItem?.name}
+              />
+            </div>
             <div className='bg-[#151d25] border-t border-t-[#1e2732] custom-page lg:flex shadow-lg'>
               <div className='lg:mr-5 mb-5 lg:w-3/4'>
                 <SideMovieInfo

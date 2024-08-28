@@ -3,7 +3,8 @@ import { homeApi } from './apiSlice/homeApi.slice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import loadingReducer from './mainSlice/LoadingSlice/loadingSlice';
 import searchReducer from './searchSlice/searchSlice';
-import submenuReducer from './mainSlice/SubmenuSlice/submenuSlice'
+import submenuReducer from './mainSlice/SubmenuSlice/submenuSlice';
+
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,7 @@ export const store = configureStore({
     loadingState: loadingReducer,
     [homeApi.reducerPath]: homeApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(homeApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(homeApi.middleware, ),
 });
 
 setupListeners(store.dispatch);

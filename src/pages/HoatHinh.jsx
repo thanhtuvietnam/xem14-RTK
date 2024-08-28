@@ -4,8 +4,10 @@ const HoatHinh = () => {
   return (
     <>
       <MovieCategory
+        categoryBreadCrumb='Hoạt Hình'
         sectionTitle='Hoạt Hình'
         categorySlug='hoat-hinh'
+        hiddenOther={`hidden`}
       />
     </>
   );

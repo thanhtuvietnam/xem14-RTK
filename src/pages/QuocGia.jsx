@@ -25,9 +25,6 @@ const QuocGia = () => {
     }
   }, [location.state]);
 
-
- 
-
   const page = useAppSelector((state) => state.search.page);
 
   const { data: quocgiaRes, isLoading, isFetching, refetch, isError, error } = useGetCategoriesQuery({ category: selectedType, genreName: selectedSlug, page }, { skip: !selectedSlug || !selectedType });
@@ -49,6 +46,8 @@ const QuocGia = () => {
         <SkeletonForAll />
       ) : (
         <MovieCategory
+          OthersBreadCrumb={titlePage}
+          categoryBreadCrumb={'Quốc gia'}
           totalItemsSearch={totalPages}
           sectionTitle={`Quốc gia ${titlePage}`}
           dataResults={dataResults}

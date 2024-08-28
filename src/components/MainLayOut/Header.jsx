@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { icons } from '../../shared/icon.js';
 import { SearchBar } from './index.js';
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
@@ -37,6 +38,12 @@ const Header = () => {
             to='/'
             className='flex items-center gap-1.5 object-cover'>
             <LazyLoadImage
+              effect='blur'
+              wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                background: '#f0f0f0',
+                // style: { transitionDelay: '1s' },
+              }}
               src='/logo.jpg'
               className='h-10 w-10 ml-2.5 rounded-md'
             />

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useReducer, useEffect, useCallback, useMemo } from 'react';
 import { RightBarCar } from '../MainLayOut/index.js';
 import { Link, useNavigate } from 'react-router-dom';
 import { icons } from '../../shared/icon';
@@ -36,12 +36,10 @@ const SearchBar = () => {
   // const pageRTK = useAppSelector((state) => state.search.page);
 
   useEffect(() => {
+    const totalItems = homeRes?.data?.params?.pagination?.totalItems || 0;
     if (homeRes && homeRes.data && homeRes.data.params && homeRes.data.params.pagination) {
-      const totalItems = homeRes?.data?.params?.pagination?.totalItems || 0;
       dispatch(setTotalItems(totalItems));
     }
-    // if (totalItems) {
-    // }
   }, [homeRes]);
 
   const navigate = useNavigate();
@@ -59,10 +57,6 @@ const SearchBar = () => {
       dispatch(clearSlug());
     }
     setShowDropdown(true);
-    // dispatch(setPage(1));
-    // dispatch(setCurrentPage(1));
-    // dispatch(clearType());
-    // dispatch(clearSlug());
   };
 
   const handleSearchSubmit = (e) => {

@@ -1,18 +1,31 @@
-import * as React from 'react';
-import { Filter, TrendingNow, MovieWatchBox, RecommendMovie, TableLink, LinkServer, NoteViewer } from '../components/Common/index.js';
+import React, { useState, useEffect } from 'react';
+
+import { Filter, TrendingNow, MovieWatchBox, RecommendMovie, TableLink, LinkServer, NoteViewer, BreadCrumb } from '../components/Common/index.js';
 import { PacmanLoader, MoonLoader } from 'react-spinners';
 
 import { useLocation } from 'react-router-dom';
 import { noteMovieWatch } from '../shared/constant.js';
+import { useAppdispatch, useAppSelector } from '../store/hook.js';
+import { setLoading } from '../store/mainSlice/LoadingSlice/loadingSlice.js';
 
 const MovieWatch = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
+  // const [isLoading, setIsLoading] = React.useState(false);
   const location = useLocation();
 
   const movieDetails = location?.state?.movieDetails;
 
   const serverData = movieDetails?.episodes[0].server_data;
-  // console.log(movieDetails);
+  const isLoading = useAppSelector((state) => state.loadingState.Loading); // Lấy loading state từ Redux
+  // console.log(serverData);
+  const dispatch = useAppdispatch();
+  useEffect(() => {
+    dispatch(setLoading(true));
+    if (movieDetails) {
+      setTimeout(() => {
+        dispatch(setLoading(false));
+      }, 100);
+    }
+  }, [movieDetails]);
 
   return (
     <div>
@@ -30,6 +43,14 @@ const MovieWatch = () => {
             </div>
           ) : (
             <div className='mt-2 sm  lg:mr-5 mb-5'>
+              <div className='mb-2'>
+                <BreadCrumb
+                  categoryBreadCrumb={'Xem Phim'}
+                  OthersBreadCrumb={movieDetails?.name}
+                  hidden={`opacity-0`}
+                />
+              </div>
+
               <NoteViewer note={noteMovieWatch} />
               <div>
                 <MovieWatchBox movieDetails={movieDetails} />

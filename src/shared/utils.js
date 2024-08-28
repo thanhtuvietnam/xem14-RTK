@@ -96,3 +96,8 @@ export const getYoutubeVideoId = (url) => {
     return null;
   }
 };
+
+export function randomPage() {
+  const randomScore = Math.floor(Math.random() * (50 - 2 + 1)) + 2;
+  return randomScore;
+}

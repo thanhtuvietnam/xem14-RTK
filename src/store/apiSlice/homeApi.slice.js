@@ -32,18 +32,6 @@ export const homeApi = createApi({
     getMoviesByCategory: builder.query({
       query: ({ category, page }) => `danh-sach/${category}?page=${page}`,
     }),
-    // getTheLoai: builder.query({
-    //   query: () => `the-loai`, // Không cần argument
-    // }),
-    // getTheLoaiDetails: builder.query({
-    //   query: ({ genreName = '', page }) => `the-loai/${genreName}?page=${page}`,
-    // }),
-    // getQuocGia: builder.query({
-    //   query: () => `quoc-gia`,
-    // }),
-    // getQuocGiaDetails: builder.query({
-    //   query: ({ genreName = '', page }) => `quoc-gia/${genreName}?page=${page}`,
-    // }),
     getCategories: builder.query({
       query: ({ category, genreName = '', page = 1 }) => `${category}/${genreName}?page=${page}`,
     }),
@@ -53,4 +41,4 @@ export const homeApi = createApi({
   }),
 });
 
-export const { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery , useGetCategoriesQuery, useGetSearchQuery, useGetHomeQuery, useGetMovieResQuery, useGetMoviesByCategoryQuery } = homeApi;
+export const { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery, useGetCategoriesQuery, useGetSearchQuery, useGetHomeQuery, useGetMovieResQuery, useGetMoviesByCategoryQuery } = homeApi;

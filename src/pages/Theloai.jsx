@@ -42,6 +42,8 @@ const Theloai = () => {
         <SkeletonForAll />
       ) : (
         <MovieCategory
+          OthersBreadCrumb={titlePage}
+          categoryBreadCrumb={'Thể Loại'}
           dataResults={dataResults}
           sectionTitle={`Thể loại ${titlePage}`}
           totalItemsSearch={totalPages}

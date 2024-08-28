@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import BannerSlider from '../components/Slider/BannerSlider';
 import SectionSlider from '../components/Slider/SectionSlider';
@@ -18,12 +18,14 @@ const HomePage = () => {
   const [movies, setMovies] = React.useState([]);
   const Loading = useAppSelector((state) => state.loadingState.Loading);
   const dispatch = useAppdispatch();
+  // const page = randomPage();
 
   const PhimmoiQuery = useGetPhimmoiQuery(1);
   const PhimboQuery = useGetPhimboQuery(1);
   const PhimleQuery = useGetPhimleQuery(1);
   const TVShowsQuery = useGetTVShowsQuery(1);
   const HoathinhQuery = useGetHoathinhQuery(1);
+  // const MiniSliderQuery = useGetPhimleQuery(page, { skip: !page });
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -33,13 +35,13 @@ const HomePage = () => {
     const error = PhimmoiQuery.error || PhimboQuery.error || PhimleQuery.error || TVShowsQuery.error || HoathinhQuery.error;
 
     const allLoaded = !PhimmoiQuery.isLoading && !PhimboQuery.isLoading && !PhimleQuery.isLoading && !TVShowsQuery.isLoading && !HoathinhQuery.isLoading;
-
     const allDataFetched = {
       Phimmoi: PhimmoiQuery?.data?.data?.items,
       Phimbo: PhimboQuery?.data?.data?.items,
       Phimle: PhimleQuery?.data?.data?.items,
       TVShows: TVShowsQuery?.data?.data?.items,
       Hoathinh: HoathinhQuery?.data?.data?.items,
+      // MiniSlider: MiniSliderQuery?.data?.data?.items,
     };
     if (hasError) {
       dispatch(setLoading(false));
@@ -65,6 +67,7 @@ const HomePage = () => {
           hidden={`hidden`}
           note={noteLine}
         />
+
         <ToastContainer />
         {Loading ? (
           <div className='w-full'>

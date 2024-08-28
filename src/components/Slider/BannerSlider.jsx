@@ -1,19 +1,20 @@
-import * as React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/bundle';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import { IMG_URL } from '../../shared/constant';
 import { icons } from '../../shared/icon';
 import { useHoverState, linkUrl, shuffleAndSliceArray } from '../../shared/utils.js';
-
+import ImdbScore from '../Common/ImdbScore.jsx';
 const { SlControlPlay, FaStar, IoCalendarOutline, IoMdTime, LuLanguages, MdOutlineHighQuality } = icons;
 
 const BannerSlider = ({ films }) => {
   const { isHovering, handleMouseEnter, handleMouseLeave } = useHoverState();
+
   // const filmAfterShuffles = shuffleAndSliceArray(films?.Phimmoi || [])
   return (
     <div className='mt-[3px] custom-responsive relative  !rounded-lg overflow-hidden swiper-container'>
@@ -21,7 +22,7 @@ const BannerSlider = ({ films }) => {
         // loop={true}
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
         spaceBetween={100}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 7000, disableOnInteraction: false }}
         slidesPerView={1}
         navigation={{
           nextEl: '.swiper-button-next',
@@ -84,7 +85,7 @@ const BannerSlider = ({ films }) => {
                       </p>
                       <p className='text-lg text-yellow-300 hidden md:flex items-center gap-2 mt-1 '>
                         <i className='fa-brands fa-imdb text-2xl'></i>
-                        7.8
+                        {<ImdbScore film={film}/>}
                       </p>
                     </div>
                   </div>

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CarInfo, InfoBlock, ContentInfo, TableLink, RecommendMovie, LinkServer } from './index.js';
 import { IMG_URL } from '../../shared/constant.js';
 import { icons } from '../../shared/icon.js';
 import { getYoutubeVideoId } from '../../shared/utils.js';
+
+import ImdbScore from './ImdbScore.jsx';
+
 const { TbAlertTriangleFilled } = icons;
 
 const SideMovieInfo = ({ detail, handleWatchMovie }) => {
@@ -17,11 +20,8 @@ const SideMovieInfo = ({ detail, handleWatchMovie }) => {
   const movieServerName = movie?.episodes[0].server_name;
   const movieServerData = movie?.episodes[0].server_data;
 
-  // console.log(movieServerData);
-
   const actors = movie?.actor.length === 0 || (movie?.actor.length === 1 && movie?.actor[0] === '') ? 'NaN' : movie?.actor.join(', ');
   const directors = movie?.director.length === 0 || (movie?.director.length === 1 && movie?.director[0] === '') ? 'NaN' : movie?.director.join(', ');
-  
 
   // console.log(actors);
 
@@ -56,6 +56,7 @@ const SideMovieInfo = ({ detail, handleWatchMovie }) => {
               year={movie?.year}
               time={movie?.time}
               view={movie?.view}
+              imdbScore={<ImdbScore film={movie} />}
             />
           </div>
         </div>

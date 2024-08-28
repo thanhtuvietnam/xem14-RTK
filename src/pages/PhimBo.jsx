@@ -3,8 +3,10 @@ const PhimBo = () => {
   return (
     <>
       <MovieCategory
+        categoryBreadCrumb='Phim Bộ'
         categorySlug='phim-bo'
         sectionTitle='Phim Bộ'
+        hiddenOther={`hidden`}
       />
     </>
   );

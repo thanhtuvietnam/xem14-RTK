@@ -3,7 +3,7 @@ import { icons } from '../../shared/icon';
 
 const { FaCalendarAlt, FaClock } = icons;
 
-const InfoBlock = ({ title, originalName, episodeCurrent, qua, lang, actor, director, category, country, year, time, view }) => {
+const InfoBlock = ({ title, originalName, episodeCurrent, qua, lang, actor, director, category, country, year, time, view, imdbScore }) => {
   return (
     <div>
       <div className='text-[#a5a5a5] text-[12.5px] leading-[20px] flex flex-col gap-1.5'>
@@ -18,7 +18,7 @@ const InfoBlock = ({ title, originalName, episodeCurrent, qua, lang, actor, dire
           </span>
           <span className='flex items-center gap-1 text-yellow-300'>
             <i className='fa-brands fa-imdb text-xl'></i>
-            7.8
+            {imdbScore}
           </span>
         </div>
         <p>

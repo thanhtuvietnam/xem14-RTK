@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { NoteViewer, CardItem, Filter, PaginationCom, SectionTitle, TrendingNow } from './index.js';
+import { NoteViewer, CardItem, Filter, PaginationCom, SectionTitle, TrendingNow, BreadCrumb } from './index.js';
 import { IMG_URL, noteLine } from '../../shared/constant.js';
 import { classifyAddon } from '../../shared/utils.js';
 
@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
 
-const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySlug }) => {
+const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySlug, categoryBreadCrumb, OthersBreadCrumb, hiddenOther }) => {
   const location = useLocation();
 
   const pageType = location.pathname === '/tim-kiem' ? 'search' : 'normal';
@@ -60,6 +60,12 @@ const MovieCategory = ({ sectionTitle, dataResults, totalItemsSearch, categorySl
             <div className='bg-[#151d25] border-t border-t-[#1e2732] custom-page lg:flex shadow-lg  min-h-screen'>
               <div className='lg:mr-5 mb-5 lg:w-3/4'>
                 <div className='mb-3'>
+                  <BreadCrumb
+                    OthersBreadCrumb={OthersBreadCrumb}
+                    categoryBreadCrumb={categoryBreadCrumb}
+                    PageBreadCrumb={`Trang ${currentPage}`}
+                    hiddenOther={hiddenOther}
+                  />
                   <SectionTitle
                     sectionFilm={sectionTitle}
                     hidden={`hidden`}

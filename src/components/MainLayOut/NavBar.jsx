@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { SearchBar, SideBar } from '../MainLayOut/index.js';
 import { icons } from '../../shared/icon.js';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navLists } from '../../shared/constant.js';
 import { convertToSlug } from '../../shared/utils.js';
 import { useActiveButton } from '../../hooks/useActiveButton.js';
@@ -97,17 +97,18 @@ const NavBar = () => {
   const handleCloseSideBar = () => {
     setIsSideBarActive(false);
     handleRTK();
-   
   };
 
-  const handleTheLoaiClick = (slug) => {
+  const handleTheLoaiClick = (slug, index) => {
+    handleClick(index)
     navigate(`/the-loai/${slug}`, { state: { slug, type: 'the-loai' } });
     handleRTK();
     setShowDropDown(null);
-    
+
     // console.log('da navigate the loai')
   };
-  const handleQuocGiaClick = (slug) => {
+  const handleQuocGiaClick = (slug, index) => {
+    handleClick(index)
     navigate(`/quoc-gia/${slug}`, { state: { slug, type: 'quoc-gia' } });
     handleRTK();
     setShowDropDown(null);
@@ -117,7 +118,7 @@ const NavBar = () => {
     <div className=' bg-[#12171b] shadow-custom'>
       <ul
         ref={navbarRef}
-        className='text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300 '>
+        className={`text-[#989898] hidden lg:flex custom-page list-none items-center justify-start text-[15px] font-normal transition duration-300 `}>
         {navLists &&
           navLists.map((navList, index) => (
             <li
@@ -147,7 +148,7 @@ const NavBar = () => {
               {showDropDown === navList && (
                 <div
                   ref={showDropDown === navList ? dropdownRef : null}
-                  className='absolute left-0 bg-[#1f3d58] shadow-custom py-2 rounded-lg w-96 z-50 rounded-t-none '
+                  className={`absolute left-0 bg-[#1f3d58] shadow-custom py-2 rounded-lg w-96 z-50 rounded-t-none `}
                   // onMouseEnter={() => handleMouseEnter(navList)}
                   onMouseLeave={handleMouseLeave}>
                   {isLoading ? (
