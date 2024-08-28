@@ -32,6 +32,8 @@ const SearchPage = () => {
           <SkeletonForAll />
         ) : (
           <MovieCategory
+            hiddenOther={`hidden`}
+            categoryBreadCrumb='Tìm Kiếm'
             sectionTitle={`Kết quả tìm kiếm cho từ khoá: ${searchTerm}`}
             dataResults={dataResults}
             totalItemsSearch={totalPages}

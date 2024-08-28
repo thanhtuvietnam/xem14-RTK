@@ -3,10 +3,22 @@ import * as React from 'react';
 import { useHoverState } from '../../shared/utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-const RightBarCar = ({ movieName, originName, year, view, thumbImage, heightThumb, lineclampCss }) => {
+import { useAppdispatch, useAppSelector } from '../../store/hook';
+import { clearSearchKey } from '../../store/searchSlice/searchSlice';
+const RightBarCar = ({ movieName, originName, year, view, thumbImage, heightThumb, lineclampCss, setShowDropdown }) => {
   const { isHovering, handleMouseEnter, handleMouseLeave } = useHoverState();
+  const searchKeyRTK = useAppSelector((state) => state.search.searchKey);
+  const dispatch = useAppdispatch();
+  const handleClickItem = () => {
+    if (searchKeyRTK !== '') {
+      dispatch(clearSearchKey());
+    }
+    setShowDropdown(false);
+  };
+
   return (
     <div
+      onClick={handleClickItem}
       className={`rightbar-custom group relative px-2 py-3 rounded-md overflow-hidden transition duration-300 ease-in-out transform 
       ${isHovering ? 'animate-gradientMovertl' : 'animate-gradientMoveltr'}
       sm:flex  sm:items-center sm:gap-4 sm:px-4 

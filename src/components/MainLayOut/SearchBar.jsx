@@ -149,6 +149,7 @@ const SearchBar = () => {
                 to={`/chitiet-phim/${result?.slug}`}
                 key={result._id}>
                 <RightBarCar
+                  setShowDropdown={setShowDropdown}
                   thumbImage={`${IMG_URL}/${result?.thumb_url}`}
                   year={result?.year}
                   movieName={result?.name}

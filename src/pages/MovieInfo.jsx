@@ -17,7 +17,7 @@ const MovieInfo = () => {
   const { data: MovieRes, isLoading, isFetching, isError, error } = useGetMovieResQuery(slug);
   const movieDetails = MovieRes?.data?.item;
   const breadCrumbItem = MovieRes?.data?.breadCrumb[0];
-  console.log(breadCrumbItem);
+  // console.log(breadCrumbItem);
 
   const handleWatchMovie = () => {
     navigate(`/xem-phim/${slug}`, { state: { movieDetails } });
