@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/joy/Tooltip';
-import { LazyLoadImage, trackWindowScroll } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 const CardItem = ({ image, title, originalName, quality, lang, addOn, cardItemQualang }) => {
   return (

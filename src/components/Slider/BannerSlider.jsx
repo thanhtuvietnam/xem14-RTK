@@ -10,6 +10,8 @@ import { IMG_URL } from '../../shared/constant';
 import { icons } from '../../shared/icon';
 import { useHoverState, linkUrl, shuffleAndSliceArray } from '../../shared/utils.js';
 import ImdbScore from '../Common/ImdbScore.jsx';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 const { SlControlPlay, FaStar, IoCalendarOutline, IoMdTime, LuLanguages, MdOutlineHighQuality } = icons;
 
 const BannerSlider = ({ films }) => {
@@ -41,7 +43,13 @@ const BannerSlider = ({ films }) => {
                 to={`/${linkUrl(film)}`}
                 key={film?._id}
                 className='group'>
-                <img
+                <LazyLoadImage
+                  effect='blur'
+                  wrapperProps={{
+                    // If you need to, you can tweak the effect transition using the wrapper style.
+                    background: '#f0f0f0',
+                    style: { transitionDelay: '200ms' },
+                  }}
                   src={`${IMG_URL}/${film?.poster_url}`}
                   className='h-64 sm:h-80 md:h-96 lg:h-[720px]  w-full object-cover rounded-lg overflow-hidden'
                   alt={film?.name}
@@ -85,7 +93,7 @@ const BannerSlider = ({ films }) => {
                       </p>
                       <p className='text-lg text-yellow-300 hidden md:flex items-center gap-2 mt-1 '>
                         <i className='fa-brands fa-imdb text-2xl'></i>
-                        {<ImdbScore film={film}/>}
+                        {<ImdbScore film={film} />}
                       </p>
                     </div>
                   </div>
