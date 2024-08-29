@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import Tooltip from '@mui/joy/Tooltip';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage, trackWindowScroll } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 const CardItem = ({ image, title, originalName, quality, lang, addOn, cardItemQualang }) => {
   return (
@@ -9,12 +9,14 @@ const CardItem = ({ image, title, originalName, quality, lang, addOn, cardItemQu
         <LazyLoadImage
           // effect='opacity'
           effect='blur'
+          
           wrapperProps={{
             // If you need to, you can tweak the effect transition using the wrapper style.
             background: '#f0f0f0',
-            style: { transitionDelay: '1s' },
+            style: { transitionDelay: '200ms' },
           }}
           src={image}
+
           className='h-full w-full object-cover rounded-t-lg group-hover:scale-110 transition duration-500'
         />
         <div className={`${cardItemQualang}`}>

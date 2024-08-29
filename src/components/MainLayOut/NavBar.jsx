@@ -12,6 +12,7 @@ import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice
 
 import { useGetCategoriesQuery } from '../../store/apiSlice/homeApi.slice.js';
 import { addQuocGia, addTheLoai, clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
+import { setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
 
 const { MdOutlineMenu, FaBookmark, HiOutlineDotsVertical, IoMdArrowDropdown, IoMdArrowDropup } = icons;
 
@@ -19,6 +20,7 @@ const NavBar = () => {
   const [isSideBarActive, setIsSideBarActive] = useState(false);
   const [activeButton, handleClick] = useActiveButton(navLists);
   const [showDropDown, setShowDropDown] = useState(null);
+  // const [activeOther, setActiveOther] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const navbarRef = useRef(null);
@@ -49,6 +51,7 @@ const NavBar = () => {
   const searchKeyRTK = useAppSelector((state) => state.search.searchKey);
   const currentPageRTK = useAppSelector((state) => state.search.currentPage);
   const pageRTK = useAppSelector((state) => state.search.page);
+  const activeOther = useAppSelector((state) => state.loadingState.activeOther);
 
   function handleRTK() {
     if (currentPageRTK !== 1 || pageRTK !== 1) {
@@ -61,6 +64,7 @@ const NavBar = () => {
   }
 
   const handleItemClick = (index) => {
+    dispatch(setActiveOther(null));
     handleClick(index);
     navigate(`/${navListsSlug[index]}`);
     handleRTK();
@@ -75,12 +79,12 @@ const NavBar = () => {
     setShowDropDown((prev) => (prev === item ? 'null' : item));
   };
 
-  const handleMouseEnter = (item) => {
-    setShowDropDown(item);
-  };
-  const handleMouseLeave = () => {
-    setShowDropDown(null);
-  };
+  // const handleMouseEnter = (item) => {
+  //   setShowDropDown(item);
+  // };
+  // const handleMouseLeave = () => {
+  //   setShowDropDown(null);
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -99,16 +103,18 @@ const NavBar = () => {
     handleRTK();
   };
 
-  const handleTheLoaiClick = (slug, index) => {
-    handleClick(index)
+  const handleTheLoaiClick = (slug, genre) => {
+    dispatch(setActiveOther(genre));
+
     navigate(`/the-loai/${slug}`, { state: { slug, type: 'the-loai' } });
     handleRTK();
     setShowDropDown(null);
 
     // console.log('da navigate the loai')
   };
-  const handleQuocGiaClick = (slug, index) => {
-    handleClick(index)
+  const handleQuocGiaClick = (slug, genre) => {
+    dispatch(setActiveOther(genre));
+
     navigate(`/quoc-gia/${slug}`, { state: { slug, type: 'quoc-gia' } });
     handleRTK();
     setShowDropDown(null);
@@ -124,13 +130,18 @@ const NavBar = () => {
             <li
               key={index}
               className='relative border-r-[0.5px] first:border-l-[0.5px] border-[#2e353f] '
-              onMouseLeave={handleMouseLeave}>
+              // onMouseLeave={handleMouseLeave}
+            >
               {navList === 'THỂ LOẠI' || navList === 'QUỐC GIA' ? (
                 <div
                   ref={showDropDown === navList ? dropdownRef : null} // Gắn ref khi dropdown hiển thị
+                  // className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
                   className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
-                  onClick={() => handleDropdownClick(navList)} // Thêm onClick
-                  onMouseEnter={() => handleMouseEnter(navList)}
+                  onClick={() => {
+                    handleDropdownClick(navList);
+                    handleClick(index); // Gọi handleClick để cập nhật activeButton
+                  }}
+                  // onMouseEnter={() => handleMouseEnter(navList)}
                   // onMouseLeave={handleMouseLeave}
                 >
                   <div className='flex items-center justify-center'>
@@ -150,7 +161,8 @@ const NavBar = () => {
                   ref={showDropDown === navList ? dropdownRef : null}
                   className={`absolute left-0 bg-[#1f3d58] shadow-custom py-2 rounded-lg w-96 z-50 rounded-t-none `}
                   // onMouseEnter={() => handleMouseEnter(navList)}
-                  onMouseLeave={handleMouseLeave}>
+                  // onMouseLeave={handleMouseLeave}
+                >
                   {isLoading ? (
                     <div className='absolute bg-black w-96 h-5 z-50 '></div>
                   ) : (
@@ -160,11 +172,11 @@ const NavBar = () => {
                           {theLoaiRTK &&
                             theLoaiRTK.map((subMenuTheLoai) => (
                               <div
-                                onClick={() => handleTheLoaiClick(subMenuTheLoai?.slug)}
+                                onClick={() => handleTheLoaiClick(subMenuTheLoai?.slug, subMenuTheLoai?.name)}
                                 // onClick={() => handleItemClick(index)}
                                 // to={`/the-loai/${subMenuTheLoai.slug}`} // Điều chỉnh route cho thể loại
                                 key={subMenuTheLoai._id}
-                                className='p-2 cursor-pointer'>
+                                className={`p-2 cursor-pointer text-[#989898] hover:text-white hover:border-r-2 rounded-r-md border-[#3ddbf0] ${activeOther === subMenuTheLoai?.name ? 'bg-[#000000] text-[#e2702e] border-r-2 border-[#e2702e]' : ''}`}>
                                 {subMenuTheLoai.name}
                               </div>
                             ))}
@@ -175,11 +187,11 @@ const NavBar = () => {
                           {quocGiaRTK &&
                             quocGiaRTK.map((subMenuQuocGia) => (
                               <div
-                                onClick={() => handleQuocGiaClick(subMenuQuocGia?.slug)}
+                                onClick={() => handleQuocGiaClick(subMenuQuocGia?.slug, subMenuQuocGia?.name)}
                                 // onClick={() => handleItemClick(index)}
                                 // to={`/quoc-gia/${subMenuQuocGia.slug}`} // Điều chỉnh route cho quốc gia
                                 key={subMenuQuocGia._id}
-                                className='p-2 cursor-pointer'>
+                                className={`p-2 truncate cursor-pointer text-[#989898] hover:text-white hover:border-r-2 rounded-r-md border-[#3ddbf0] ${activeOther === subMenuQuocGia?.name ? 'bg-[#000000] text-[#e2702e] border-r-2 border-[#e2702e]' : ''}`}>
                                 {subMenuQuocGia.name}
                               </div>
                             ))}

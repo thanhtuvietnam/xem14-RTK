@@ -31,7 +31,7 @@ const RightBarCar = ({ movieName, originName, year, view, thumbImage, heightThum
           wrapperProps={{
             // If you need to, you can tweak the effect transition using the wrapper style.
             background: '#f0f0f0',
-            // style: { transitionDelay: '1s' },
+            style: { transitionDelay: '200ms' },
           }}
           src={thumbImage}
           alt='movie'

@@ -6,6 +6,7 @@ import { SearchBar } from './index.js';
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
 import { clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
+import { setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
 
 const { FaBookmark } = icons;
 
@@ -16,8 +17,14 @@ const Header = () => {
   const searchKeyRTK = useAppSelector((state) => state.search.searchKey);
   const currentPageRTK = useAppSelector((state) => state.search.currentPage);
   const pageRTK = useAppSelector((state) => state.search.page);
+  const activeOther = useAppSelector((state) => state.loadingState.activeOther);
+ 
 
   const handleOnClick = () => {
+
+    if (activeOther !== null) {
+      dispatch(setActiveOther(null));
+    }
     if (currentPageRTK !== 1 || pageRTK !== 1) {
       dispatch(setCurrentPage(1));
       dispatch(setPage(1));

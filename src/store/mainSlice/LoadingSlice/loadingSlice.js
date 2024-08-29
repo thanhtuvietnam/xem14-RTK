@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   Loading: false,
   Error: false,
-  Dropdown: null,
+  activeOther: null,
 };
 
 const loadingSlice = createSlice({
@@ -16,12 +16,12 @@ const loadingSlice = createSlice({
     setError: (state, action) => {
       state.Error = action.payload;
     },
-    setDropdown: (state) => {
-      state.Dropdown = !state.Dropdown;
+    setActiveOther: (state, action) => {
+      state.activeOther = action.payload;
     },
   },
 });
 
-export const { setLoading, setError, setDropdown } = loadingSlice.actions;
+export const { setLoading, setError, setActiveOther } = loadingSlice.actions;
 
 export default loadingSlice.reducer;

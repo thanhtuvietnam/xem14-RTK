@@ -413,11 +413,19 @@ body::-webkit-scrollbar-thumb:hover {
 }
 /* movieWatchBox */
 .plyr {
-  --plyr-color-main: #df6725;
+  --plyr-color-main: #347492;
   --plyr-border-radius: 10px;
-
+  --plyr-video-control-color: #d8cece;
+  --plyr-video-control-color-hover: #030303;
+  /* --plyr-progress-loading-background: rgba(241, 247, 255, 0.6); */
   --plyr-control-spacing: 5px;
   --plyr-control-icon-size: 40px;
+  --plyr-control-icon-color: 'black';
+  --plyr-tooltip-background: #584c4c;
+  --plyr-tooltip-color: hsl(216, 21%, 91%);
+}
+.plyr .plyr__control--overlaid:hover {
+  background-color: #3498db;
 }
 @media (max-width: 640px) {
   .plyr {
@@ -478,4 +486,23 @@ body::-webkit-scrollbar-thumb:hover {
 .dropdown-content li:hover {
   /* Style for hover on individual items */
   background-color: #212121; /* Slightly darker background on hover */
+}
+
+/* Skeleton css */
+@media (max-width: 768px) {
+  .skeleton {
+    height: 300px; /* Chiều cao trên điện thoại */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .skeleton {
+    height: 400px; /* Chiều cao trên iPad */
+  }
+}
+
+@media (min-width: 1024px) {
+  .skeleton {
+    height: 500px; /* Chiều cao trên máy tính */
+  }
 }

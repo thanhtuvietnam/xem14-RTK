@@ -15,7 +15,7 @@ export default function BreadCrumb({ categoryBreadCrumb, PageBreadCrumb, hidden,
   return (
     <div
       role='presentation'
-      className='flex items-center gap-2'>
+      className='flex items-center gap-2 text-ellipsis overflow-hidden whitespace-nowrap'>
       <Link
         className='cursor-pointer text-[#1890ff]'
         onClick={handleClick}
@@ -48,7 +48,6 @@ export default function BreadCrumb({ categoryBreadCrumb, PageBreadCrumb, hidden,
         />
         {PageBreadCrumb}
       </div>
-      {/* </Breadcrumbs> */}
     </div>
   );
 }

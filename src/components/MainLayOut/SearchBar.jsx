@@ -12,6 +12,7 @@ import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage, setSearchKey, setTotalItems } from '../../store/searchSlice/searchSlice.js';
 import { useDebounce } from '../../hooks/useDebounce.js';
 import { clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
+import { setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
 const { IoIosSearch } = icons;
 
 const SearchBar = () => {
@@ -29,6 +30,7 @@ const SearchBar = () => {
   const slugRTK = useAppSelector((state) => state.submenu.slug);
   const currentPageRTK = useAppSelector((state) => state.search.currentPage);
   const totalItemsRTK = useAppSelector((state) => state.search.totalItems);
+  const activeOther = useAppSelector((state) => state.loadingState.activeOther);
 
   const { data: homeRes } = useGetHomeQuery(null, { skip: totalItemsRTK !== 0 });
   const { data: state, isLoading, error, isFetching } = useGetSearchQuery({ searchTerm: debouncedSearchTerm, page }, { skip: !debouncedSearchTerm });
@@ -48,6 +50,10 @@ const SearchBar = () => {
 
   const handleChange = (e) => {
     dispatch(setSearchKey(e.target.value));
+    if (activeOther !== null) {
+      dispatch(setActiveOther(null));
+      1;
+    }
     if (currentPageRTK !== 1 || page !== 1) {
       dispatch(setCurrentPage(1));
       dispatch(setPage(1));

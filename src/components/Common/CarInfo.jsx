@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { icons } from '../../shared/icon';
 import { TrailerModal } from './index.js';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 const { IoPlaySharp, MdExpandMore, FaCirclePlus, IoLogoYoutube, ImBookmark } = icons;
 
 const CarInfo = ({ image, altname, setExpandServer, trailerLink, handleWatchMovie }) => {
@@ -13,7 +14,13 @@ const CarInfo = ({ image, altname, setExpandServer, trailerLink, handleWatchMovi
   return (
     <div className='bg-blue-800  justify-between min-[425px]:mx-[43px] md:mx-0 relative rounded-lg'>
       <div className='flex flex-col items-center rounded-lg'>
-        <img
+        <LazyLoadImage
+          effect='blur'
+          wrapperProps={{
+            // If you need to, you can tweak the effect transition using the wrapper style.
+            background: '#f0f0f0',
+            style: { transitionDelay: '200ms' },
+          }}
           src={image}
           alt={altname}
           className='w-full h-full object-cover rounded-lg'

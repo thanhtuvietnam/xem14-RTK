@@ -4,9 +4,13 @@ import { Filter, TrendingNow, MovieWatchBox, RecommendMovie, TableLink, LinkServ
 import { PacmanLoader, MoonLoader } from 'react-spinners';
 
 import { useLocation } from 'react-router-dom';
-import { noteMovieWatch } from '../shared/constant.js';
+import { noteLine, noteMovieWatch } from '../shared/constant.js';
 import { useAppdispatch, useAppSelector } from '../store/hook.js';
 import { setLoading } from '../store/mainSlice/LoadingSlice/loadingSlice.js';
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import FilterSkeleton from '../components/Skeleton/HomePageSkeleton/FilterSkeleton.jsx';
+import CardSkeleton from '../components/Skeleton/HomePageSkeleton/CardSkeleton.jsx';
 
 const MovieWatch = () => {
   // const [isLoading, setIsLoading] = React.useState(false);
@@ -28,48 +32,112 @@ const MovieWatch = () => {
   }, [movieDetails]);
 
   return (
-    <div>
-      <Filter />
-      <div className='bg-[#151d25] border-t border-t-[#1e2732] custom-page lg:flex shadow-lg'>
-        <div className='lg:w-3/4'>
-          {isLoading ? (
-            <div className='flex flex-col items-center gap-2 mt-3'>
-              <span className='text-[#e9e9ea]'>Đang tải...</span>
+    <div className='min-h-screen custom-page px-0 bg-[#151d25]'>
+      <NoteViewer
+        hidden={`hidden`}
+        note={noteLine}
+      />
+      {isLoading ? (
+        <div className='min-h-screen w-full'>
+          <SkeletonTheme
+            baseColor='#202020'
+            highlightColor='#444'>
+            <FilterSkeleton />
+            <div className='mt-3 lg:flex custom-page  shadow-lg gap-3 min-h-screen'>
+              <div className='lg:w-3/4'>
+                <div className='w-full md:flex gap-3'>
+                  <div className='skeleton w-full'>
+                    <Skeleton
+                      height={30}
+                      width={`30%`}
+                      className='skeleton'
+                    />
+                    <Skeleton
+                      // height={300}
+                      width={`100%`}
+                      className='skeleton'
+                    />
+                  </div>
+                </div>
+                <div className='mt-2'>
+                  <Skeleton
+                    height={200}
+                    width={`100%`}
+                  />
+                </div>
+                <div className='mt-2'>
+                  <Skeleton
+                    height={100}
+                    width={`100%`}
+                  />
+                </div>
+                <div className='mt-2'>
+                  <Skeleton
+                    height={50}
+                    width={`25%`}
+                  />
+                </div>
+                <div className='grid grid-cols-2 mt-3 gap-2 md:grid-cols-4 md:grid-rows-3 '>
+                  {[...Array(8)].map((_, index) => (
+                    <div key={index}>
+                      <CardSkeleton
+                        height={250}
+                        width={`100%`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className='lg:w-2/6'>
+                <Skeleton
+                  className=' h-screen lg:flex'
+                  height={2000}
+                />
+              </div>
+            </div>
+            <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50'>
               <MoonLoader
-                size={60}
+                size={160}
                 color='#e06c26'
                 className='z-50'
               />
             </div>
-          ) : (
-            <div className='mt-2 sm  lg:mr-5 mb-5'>
-              <div className='mb-2'>
-                <BreadCrumb
-                  categoryBreadCrumb={'Xem Phim'}
-                  OthersBreadCrumb={movieDetails?.name}
-                  hidden={`opacity-0`}
-                />
-              </div>
-
-              <NoteViewer note={noteMovieWatch} />
-              <div>
-                <MovieWatchBox movieDetails={movieDetails} />
-              </div>
-              {/* <div>tập dự phòng</div> */}
-              <div className='bg-[#101821] rounded-md p-3 text-[#a5a5a5] mb-2 border-[1px] border-[#1e2732] overflow-y-auto overflow-x-scroll h-60 scroll-bar-custom'>
-                <TableLink movieServerData={serverData} />
-              </div>
-              <div>comment</div>
-              <div>
-                <RecommendMovie />
+          </SkeletonTheme>
+        </div>
+      ) : (
+        <>
+          <Filter />
+          <div className='bg-[#151d25] border-t border-t-[#1e2732] custom-page lg:flex shadow-lg'>
+            <div className='lg:w-3/4'>
+              <div className='mt-2 sm  lg:mr-5 mb-5'>
+                <div className='mb-2'>
+                  <BreadCrumb
+                    categoryBreadCrumb={'Xem Phim'}
+                    OthersBreadCrumb={movieDetails?.name}
+                    hidden={`opacity-0`}
+                  />
+                </div>
+                <LazyLoadComponent />
+                <NoteViewer note={noteMovieWatch} />
+                <div>
+                  <MovieWatchBox movieDetails={movieDetails} />
+                </div>
+                {/* <div>tập dự phòng</div> */}
+                <div className='bg-[#101821] rounded-md p-3 text-[#a5a5a5] mb-2 border-[1px] border-[#1e2732] overflow-y-auto overflow-x-scroll h-60 scroll-bar-custom'>
+                  <TableLink movieServerData={serverData} />
+                </div>
+                <div>comment</div>
+                <div>
+                  <RecommendMovie />
+                </div>
               </div>
             </div>
-          )}
-        </div>
-        <div className='lg:w-2/6 '>
-          <TrendingNow />
-        </div>
-      </div>
+            <div className='lg:w-2/6 '>
+              <TrendingNow />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

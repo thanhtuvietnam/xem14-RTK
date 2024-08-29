@@ -53,7 +53,7 @@ const MovieBox = ({ episode, poster }) => {
         onSeeked={handleSeeked}>
         <MediaProvider />
         <PlyrLayout
-          // thumbnails='https://files.vidstack.io/sprite-fight/thumbnails.vtt'
+         
           clickToFullscreen={false}
           clickToPlay={false}
           toggleTime={true}
