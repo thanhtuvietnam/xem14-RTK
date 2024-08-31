@@ -5,14 +5,15 @@ import SectionSlider from '../components/Slider/SectionSlider';
 import { TrendingNow, Filter, NoteViewer } from '../components/Common/index.js';
 import { MiniSlider } from '../components/Slider/MiniSlider';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { noteLine } from '../shared/constant.js';
+import { navLists, noteLine } from '../shared/constant.js';
 import { useGetPhimmoiQuery, useGetPhimboQuery, useGetPhimleQuery, useGetTVShowsQuery, useGetHoathinhQuery } from '../store/apiSlice/homeApi.slice.js';
 import { useAppdispatch, useAppSelector } from '../store/hook.js';
-import { setLoading } from '../store/mainSlice/LoadingSlice/loadingSlice.js';
+import { setActiveButton, setLoading } from '../store/mainSlice/LoadingSlice/loadingSlice.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SkeletonForAll from '../components/Skeleton/SkeletonForAll/SkeletonForAll.jsx';
 import Error from './Error.jsx';
+import { useActiveButton } from '../hooks/useActiveButton.js';
 
 const HomePage = () => {
   const [movies, setMovies] = React.useState([]);
@@ -26,9 +27,13 @@ const HomePage = () => {
   const TVShowsQuery = useGetTVShowsQuery(1);
   const HoathinhQuery = useGetHoathinhQuery(1);
   // const MiniSliderQuery = useGetPhimleQuery(page, { skip: !page });
-
+  const [activeButton, handleClick] = useActiveButton(navLists);
+  if (activeButton === null) {
+    dispatch(setActiveButton(0));
+  }
   useEffect(() => {
     dispatch(setLoading(true));
+   
     // setIsLoading(true);
     const hasError = [PhimmoiQuery, PhimboQuery, PhimleQuery, TVShowsQuery, HoathinhQuery].some((query) => query.isError);
 
@@ -58,6 +63,7 @@ const HomePage = () => {
       setMovies(allDataFetched);
       // console.log(allDataFetched);
     }
+
   }, [PhimmoiQuery, PhimboQuery, PhimleQuery, TVShowsQuery, HoathinhQuery]);
 
   return (

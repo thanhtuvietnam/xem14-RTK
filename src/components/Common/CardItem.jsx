@@ -9,14 +9,12 @@ const CardItem = ({ image, title, originalName, quality, lang, addOn, cardItemQu
         <LazyLoadImage
           // effect='opacity'
           effect='blur'
-          
           wrapperProps={{
             // If you need to, you can tweak the effect transition using the wrapper style.
             background: '#f0f0f0',
             style: { transitionDelay: '200ms' },
           }}
           src={image}
-
           className='h-full w-full object-cover rounded-t-lg group-hover:scale-110 transition duration-500'
         />
         <div className={`${cardItemQualang}`}>

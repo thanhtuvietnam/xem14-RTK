@@ -44,6 +44,11 @@ const SearchBar = () => {
     }
   }, [homeRes]);
 
+  // const totalItems = homeRes?.data?.params?.pagination?.totalItems || 0;
+  // if (homeRes && homeRes.data && homeRes.data.params && homeRes.data.params.pagination) {
+  //   dispatch(setTotalItems(totalItems));
+  // }
+
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);

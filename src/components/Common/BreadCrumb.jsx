@@ -4,11 +4,24 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import GrainIcon from '@mui/icons-material/Grain';
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import { Link, useNavigate } from 'react-router-dom';
+import { useActiveButton } from '../../hooks/useActiveButton';
+import { navLists } from '../../shared/constant';
+import { useAppdispatch, useAppSelector } from '../../store/hook';
+import { setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice';
 
 export default function BreadCrumb({ categoryBreadCrumb, PageBreadCrumb, hidden, hiddenOther, OthersBreadCrumb }) {
+  const [activeButton, handleClick] = useActiveButton(navLists);
   const navigate = useNavigate();
-  function handleClick(event) {
+  const activeOther = useAppSelector((state) => state.loadingState.activeOther);
+  const dispatch = useAppdispatch()
+  function handleClickHome(event) {
     event.preventDefault();
+    if (activeOther !== null) {
+      dispatch(setActiveOther(null));
+    }
+    if (activeButton !== null) {
+      handleClick(0);
+    }
     navigate('/');
     // console.info('You clicked a breadcrumb.');
   }
@@ -18,7 +31,7 @@ export default function BreadCrumb({ categoryBreadCrumb, PageBreadCrumb, hidden,
       className='flex items-center gap-2 text-ellipsis overflow-hidden whitespace-nowrap'>
       <Link
         className='cursor-pointer text-[#1890ff]'
-        onClick={handleClick}
+        onClick={handleClickHome}
         underline='hover'
         sx={{ display: 'flex', alignItems: 'center' }}>
         <HomeIcon

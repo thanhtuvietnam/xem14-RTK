@@ -93,7 +93,7 @@ const BannerSlider = ({ films }) => {
                       </p>
                       <p className='text-lg text-yellow-300 hidden md:flex items-center gap-2 mt-1 '>
                         <i className='fa-brands fa-imdb text-2xl'></i>
-                        {<ImdbScore film={film} />}
+                        {/* {<ImdbScore film={film} />} */}
                       </p>
                     </div>
                   </div>

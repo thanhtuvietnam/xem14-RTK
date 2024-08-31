@@ -424,8 +424,15 @@ body::-webkit-scrollbar-thumb:hover {
   --plyr-tooltip-background: #584c4c;
   --plyr-tooltip-color: hsl(216, 21%, 91%);
 }
+.plyr__poster {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+
 .plyr .plyr__control--overlaid:hover {
-  background-color: #3498db;
+  background-color: #9759c0;
+  opacity: 90%;
 }
 @media (max-width: 640px) {
   .plyr {

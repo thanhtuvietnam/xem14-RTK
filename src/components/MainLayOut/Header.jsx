@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -6,11 +8,14 @@ import { SearchBar } from './index.js';
 import { useAppdispatch, useAppSelector } from '../../store/hook.js';
 import { clearSearchKey, setCurrentPage, setPage } from '../../store/searchSlice/searchSlice.js';
 import { clearSlug, clearType } from '../../store/mainSlice/SubmenuSlice/submenuSlice.js';
-import { setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
+import { setActiveButton, setActiveOther } from '../../store/mainSlice/LoadingSlice/loadingSlice.js';
+import { useActiveButton } from '../../hooks/useActiveButton.js';
+import { navLists } from '../../shared/constant.js';
 
 const { FaBookmark } = icons;
 
-const Header = () => {
+const Header = ({ onLogoClick }) => {
+  const [activeButton, handleClick] = useActiveButton(navLists);
   const dispatch = useAppdispatch();
   const typeRTK = useAppSelector((state) => state.submenu.type);
   const slugRTK = useAppSelector((state) => state.submenu.slug);
@@ -18,10 +23,13 @@ const Header = () => {
   const currentPageRTK = useAppSelector((state) => state.search.currentPage);
   const pageRTK = useAppSelector((state) => state.search.page);
   const activeOther = useAppSelector((state) => state.loadingState.activeOther);
+  // const activeButton = useAppSelector((state) => state.loadingState.activeButton);
  
-
   const handleOnClick = () => {
-
+    // if (activeButton !== null) {
+    //   handleClick(0)
+    // }
+    onLogoClick();
     if (activeOther !== null) {
       dispatch(setActiveOther(null));
     }

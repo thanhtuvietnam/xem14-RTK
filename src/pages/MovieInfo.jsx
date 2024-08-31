@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Error from './Error.jsx';
 import { noteLine } from '../shared/constant.js';
+import { useActiveButton } from '../hooks/useActiveButton.js';
 
 const MovieInfo = () => {
   const { slug } = useParams();
@@ -17,9 +18,13 @@ const MovieInfo = () => {
   const { data: MovieRes, isLoading, isFetching, isError, error } = useGetMovieResQuery(slug);
   const movieDetails = MovieRes?.data?.item;
   const breadCrumbItem = MovieRes?.data?.breadCrumb[0];
+  const [activeButton, handleClick] = useActiveButton();
   // console.log(breadCrumbItem);
 
   const handleWatchMovie = () => {
+    // if (activeButton !== null) {
+    //   handleClick(null);
+    // }
     navigate(`/xem-phim/${slug}`, { state: { movieDetails } });
   };
 

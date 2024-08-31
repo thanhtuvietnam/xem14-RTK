@@ -136,7 +136,7 @@ const NavBar = () => {
                 <div
                   ref={showDropDown === navList ? dropdownRef : null} // Gắn ref khi dropdown hiển thị
                   // className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
-                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344]' : ''}`}
+                  className={`px-2.5 py-3.5 dropdown hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer  ${activeButton === index ? 'bg-[#223344] text-[#ffff]' : ''}`}
                   onClick={() => {
                     handleDropdownClick(navList);
                     handleClick(index); // Gọi handleClick để cập nhật activeButton
@@ -151,7 +151,7 @@ const NavBar = () => {
                 </div>
               ) : (
                 <div
-                  className={`px-2.5 py-3.5 hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer ${activeButton === index ? 'bg-[#223344]' : ''}`}
+                  className={`px-2.5 py-3.5 hover:text-[#ff8a00] hover:bg-[#000000] cursor-pointer ${activeButton === index ? 'bg-[#223344] text-[#ffff]' : ''}`}
                   onClick={() => handleItemClick(index)}>
                   {navList}
                 </div>
