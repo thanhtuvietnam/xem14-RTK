@@ -13,15 +13,12 @@ const SideMovieInfo = ({ detail, handleWatchMovie }) => {
 
   const movie = detail;
   const movieTrailerUrl = movie?.trailer_url;
-  // console.log(movieTrailerUrl);
   const movieID = getYoutubeVideoId(movieTrailerUrl);
-  // console.log(movieID);
-  // console.log(movie.episodes[0])
-  const movieServerName = movie?.episodes[0].server_name;
-  const movieServerData = movie?.episodes[0].server_data;
+  const movieServerName = movie?.episodes[0]?.server_name;
+  const movieServerData = movie?.episodes[0]?.server_data;
 
-  const actors = movie?.actor.length === 0 || (movie?.actor.length === 1 && movie?.actor[0] === '') ? 'NaN' : movie?.actor.join(', ');
-  const directors = movie?.director.length === 0 || (movie?.director.length === 1 && movie?.director[0] === '') ? 'NaN' : movie?.director.join(', ');
+  const actors = movie?.actor?.length > 0 && movie.actor[0] !== '' ? movie.actor.join(', ') : 'NaN';
+  const directors = movie?.director?.length > 0 && movie.director[0] !== '' ? movie.director.join(', ') : 'NaN';
 
   // console.log(actors);
 
