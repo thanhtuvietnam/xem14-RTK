@@ -87,7 +87,7 @@
 // export default Header;
 
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -167,8 +167,8 @@ const Header = React.memo(({ onLogoClick }) => {
     </header>
   );
 });
-Header.PropTypes = {
-  onLogoClick: PropTypes.func.isRequired,
+Header.propTypes = {
+  onLogoClick: propTypes.func.isRequired,
 };
 
 Header.displayName = 'Header';
